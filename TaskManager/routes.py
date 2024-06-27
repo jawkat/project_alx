@@ -1,8 +1,8 @@
 from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request,abort
-from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, TaskForm, NoteForm, TaskCollaboratorForm
-from flaskblog.models import User, Task, Note, TaskCollaborator
+from TaskManager import app, db, bcrypt
+from TaskManager.forms import RegistrationForm, LoginForm, UpdateAccountForm, TaskForm, NoteForm, TaskCollaboratorForm
+from TaskManager.models import User, Task, Note, TaskCollaborator
 from flask_login import login_user, current_user, logout_user, login_required
 
 
@@ -112,7 +112,8 @@ def update_task(task_id):
         task.description = form.description.data
         task.status = form.status.data
         task.priority = form.priority.data
-        task.due_date = form.due_date.data
+        task.due_date = datetime.strptime(form.due_date.data, '%d/%m/%Y')
+        task.updated_at = datetime.utcnow()
         db.session.commit()
         flash('Your task has been updated!', 'success')
         return redirect(url_for('task', task_id=task.id))
@@ -121,7 +122,7 @@ def update_task(task_id):
         form.description.data = task.description
         form.status.data = task.status
         form.priority.data = task.priority
-        form.due_date.data = task.due_date
+        form.due_date.data = task.due_date.strftime('%d/%m/%Y')
     return render_template('create_task.html', title='Update Task', form=form)
 
 @app.route("/task/<int:task_id>/delete", methods=['POST'])

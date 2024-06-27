@@ -1,5 +1,5 @@
-from flaskblog import app, db
-from flaskblog.models import User,TaskCollaborator,Task,Note
+from TaskManager import app, db
+from TaskManager.models import User,TaskCollaborator,Task,Note
 
 # Create an application context
 with app.app_context():

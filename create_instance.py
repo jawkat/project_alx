@@ -1,5 +1,5 @@
-from flaskblog import app, db
-from flaskblog.models import User, Post
+from TaskManager import app, db
+from TaskManager.models import User, Post
 
 
 #

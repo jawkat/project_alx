@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flaskblog.models import User, Task
+from TaskManager.models import User, Task
 
 
 class RegistrationForm(FlaskForm):
@@ -69,6 +69,9 @@ class TaskForm(FlaskForm):
                                                 ('high', 'High')], default='medium')
     due_date = StringField('Due Date')
     submit = SubmitField('Save Task')
+
+
+
 
 class NoteForm(FlaskForm):
     """Form to create or update a note"""

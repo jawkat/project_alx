@@ -1,7 +1,7 @@
 """ Models """
 from datetime import datetime
 from flask_login import UserMixin
-from flaskblog import db, login_manager
+from TaskManager import db, login_manager
 
 
 
