@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ task.title }}</h2>
+        <p><strong>Description:</strong> {{ task.description }}</p>
+        <p><strong>Status:</strong> {{ task.status }}</p>
+        <p><strong>Priority:</strong> {{ task.priority }}</p>
+        <p><strong>Due Date:</strong> {{ task.due_date }}</p>
+        <p><strong>Created At:</strong> {{ task.created_at }}</p>
+        <p><strong>Updated At:</strong> {{ task.updated_at }}</p>
+        <hr>
+        <h3>Notes</h3>
+        <ul class="list-group">
+            {% for note in task.notes %}
+                <li class="list-group-item">{{ note.content }}</li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <h3>Collaborators</h3>
+        <ul class="list-group">
+            {% for collaborator in task.task_collaborators %}
+                <li class="list-group-item">{{ collaborator.user.username }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}
