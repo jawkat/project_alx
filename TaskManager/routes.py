@@ -8,12 +8,19 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 
 @app.route("/")
+@app.route("/welcome")
+def welcome():
+    """Route to display all tasks on the home page."""
+    return render_template('welcome.html')
+
+
 @app.route("/home")
 @login_required
 def home():
     """Route to display all tasks on the home page."""
     tasks = current_user.tasks
     return render_template('home.html', tasks=tasks)
+
 
 @app.route("/about")
 def about():
@@ -75,6 +82,17 @@ def account():
             form.email.data = current_user.email
     return render_template('account.html', title='Account', form=form)
 
+@app.route("/tasks")
+@login_required
+def all_tasks():
+    """Route to display all tasks on the home page."""
+    tasks = current_user.tasks
+    return render_template('all_tasks.html', tasks=tasks)
+
+
+
+
+
 @app.route("/task/new", methods=['GET', 'POST'])
 @login_required
 def new_task():
@@ -125,7 +143,7 @@ def update_task(task_id):
         form.due_date.data = task.due_date.strftime('%d/%m/%Y')
     return render_template('create_task.html', title='Update Task', form=form)
 
-@app.route("/task/<int:task_id>/delete", methods=['POST'])
+@app.route("/task/<int:task_id>/delete", methods=['POST','DELETE'])
 @login_required
 def delete_task(task_id):
     """Route to delete an existing task."""

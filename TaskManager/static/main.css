@@ -1,23 +1,35 @@
 body {
-  background: #fafafa;
-  color: #333333;
+  /* background: #fafafa; */
+  /* background-color: rgba(250, 250, 250, 0.185); Adjust the last value (0.9) for transparency */
+  width: 100%;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  /* background-image: url('my-main.jpg'); */
+  background-position: center;
+  background-size: cover; /* Ensures the background image covers the entire body */
+  position: relative;
+  /* filter: blur(2px); */
+  /* color: #b43a3a; */
   margin-top: 5rem;
+
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #444444;
+  color: #ffffff;
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  background-color: #254053;
 }
 
+/* text style in the navigation bar */
 .site-header .navbar-nav .nav-link {
-  color: #cbd5db;
+  color: #fdfeff;
 }
 
+/* text style when moving mouse over to navigation bar */
 .site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
+  color: #f51717;
 }
 
 .site-header .navbar-nav .nav-link.active {
@@ -30,6 +42,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
+
 }
 
 .article-title {
