@@ -1,23 +1,41 @@
+
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="container">
-        <h1>Tasks</h1>
-        <ul class="list-group">
+
+    <h1>Tasks</h1>
+    <table class="table table-bordered">
+        <thead class="bg-steel">
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for task in tasks %}
-                <li class="list-group-item">
-                    <h3>{{ task.title }}</h3>
-                    <p><strong>Description:</strong> {{ task.description }}</p>
-                    <p><strong>Status:</strong> {{ task.status }}</p>
-                    <p><strong>Priority:</strong> {{ task.priority }}</p>
-                    <p><strong>Due Date:</strong> {{ task.due_date.strftime('%Y-%m-%d') }}</p>
-                    <p><strong>Created At:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
-                    <p><strong>Updated At:</strong> {{ task.updated_at.strftime('%Y-%m-%d') }}</p>
-                    <a href="{{ url_for('task', task_id=task.id) }}" class="btn btn-primary">View Task</a>
-                    <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-primary">Update Task</a>
-                    <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-primary">Remove Task</a>
-                </li>
+                <tr>
+                    <td class="article-title">{{ task.title }}</td>
+                    <td class="article-content">{{ task.description }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>{{ task.priority }}</td>
+                    <td>{{ task.due_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ task.created_at.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ task.updated_at.strftime('%Y-%m-%d') }}</td>
+                    <td class="table-actions">
+                        <a href="{{ url_for('task', task_id=task.id) }}" class="btn btn-primary btn-sm">View</a>
+                        <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-secondary btn-sm">Update</a>
+
+                    <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </td>
+                </tr>
             {% endfor %}
-        </ul>
-    </div>
+        </tbody>
+    </table>
 {% endblock content %}

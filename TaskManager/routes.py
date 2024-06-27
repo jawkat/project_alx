@@ -99,7 +99,7 @@ def new_task():
     """Route to create a new task."""
     form = TaskForm()
     if form.validate_on_submit():
-        due_date = datetime.strptime(form.due_date.data, '%d/%m/%Y')
+        due_date = form.due_date.data
         task = Task(
             title=form.title.data, description=form.description.data, status=form.status.data,
             priority=form.priority.data, due_date=due_date,user_id=current_user.id,
@@ -108,7 +108,7 @@ def new_task():
         db.session.add(task)
         db.session.commit()
         flash('Your task has been created!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('all_tasks'))
     return render_template('create_task.html', title='New Task', form=form)
 
 @app.route("/task/<int:task_id>")
@@ -130,7 +130,7 @@ def update_task(task_id):
         task.description = form.description.data
         task.status = form.status.data
         task.priority = form.priority.data
-        task.due_date = datetime.strptime(form.due_date.data, '%d/%m/%Y')
+        task.due_date = form.due_date.data
         task.updated_at = datetime.utcnow()
         db.session.commit()
         flash('Your task has been updated!', 'success')
@@ -140,10 +140,10 @@ def update_task(task_id):
         form.description.data = task.description
         form.status.data = task.status
         form.priority.data = task.priority
-        form.due_date.data = task.due_date.strftime('%d/%m/%Y')
+        form.due_date.data = task.due_date
     return render_template('create_task.html', title='Update Task', form=form)
 
-@app.route("/task/<int:task_id>/delete", methods=['POST','DELETE'])
+@app.route("/task/<int:task_id>/delete", methods=['POST'])
 @login_required
 def delete_task(task_id):
     """Route to delete an existing task."""
@@ -153,7 +153,7 @@ def delete_task(task_id):
     db.session.delete(task)
     db.session.commit()
     flash('Your task has been deleted!', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('all_tasks'))
 
 @app.route("/note/new/<int:task_id>", methods=['GET', 'POST'])
 @login_required
