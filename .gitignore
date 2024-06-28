@@ -1,0 +1,21 @@
+# Ignore the venv directory
+venv/
+
+# Ignore the .env file
+.env
+
+# Ignore all .cpython-38.pyc files
+*.cpython-38.pyc
+venv/lib/python3.8/site-packages/werkzeug/*
+# Python files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Dependency directories (Python)
+site-packages/
+# IDE/Editor files
+.vscode/
+.idea/
