@@ -1,10 +1,10 @@
 from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request,abort
 from TaskManager import app, db, bcrypt
-from TaskManager.forms import RegistrationForm, LoginForm, UpdateAccountForm, TaskForm, NoteForm, TaskCollaboratorForm
+from TaskManager.forms import RegistrationUserForm, LoginForm, UpdateAccountForm, TaskForm, NoteForm, TaskCollaboratorForm
 from TaskManager.models import User, Task, Note, TaskCollaborator
 from flask_login import login_user, current_user, logout_user, login_required
-
+from sqlalchemy import func
 
 
 @app.route("/")
@@ -17,10 +17,20 @@ def welcome():
 @app.route("/home")
 @login_required
 def home():
-    """Route to display all tasks on the home page."""
-    tasks = current_user.tasks
-    return render_template('home.html', tasks=tasks)
+    # Query statistics
+    num_tasks = Task.query.count()
 
+    # Count tasks by status
+    status_counts = db.session.query(Task.status, func.count(Task.id)).group_by(Task.status).all()
+    num_tasks_by_status = {status: count for status, count in status_counts}
+
+    # Count collaborators
+    num_collaborators = TaskCollaborator.query.distinct(TaskCollaborator.user_id).count()
+
+    # Render template with statistics
+    return render_template('home.html', title='Home', num_tasks=num_tasks,
+                           num_tasks_by_status=num_tasks_by_status,
+                           num_collaborators=num_collaborators)
 
 @app.route("/about")
 def about():
@@ -32,7 +42,7 @@ def register():
     """Route to handle user registration."""
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    form = RegistrationForm()
+    form = RegistrationUserForm()
     if form.validate_on_submit():
         hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_pwd)
@@ -88,10 +98,6 @@ def all_tasks():
     """Route to display all tasks on the home page."""
     tasks = current_user.tasks
     return render_template('all_tasks.html', tasks=tasks)
-
-
-
-
 
 @app.route("/task/new", methods=['GET', 'POST'])
 @login_required
@@ -155,6 +161,8 @@ def delete_task(task_id):
     flash('Your task has been deleted!', 'success')
     return redirect(url_for('all_tasks'))
 
+
+
 @app.route("/note/new/<int:task_id>", methods=['GET', 'POST'])
 @login_required
 def new_note(task_id):
@@ -174,10 +182,22 @@ def new_collaborator(task_id):
     """Route to add a new collaborator to a specific task."""
     form = TaskCollaboratorForm()
     form.user_id.choices = [(user.id, user.username) for user in User.query.all()]
+
     if form.validate_on_submit():
-        collaborator = TaskCollaborator(task_id=task_id, user_id=form.user_id.data)
+        user_id = form.user_id.data
+
+        # Check if the collaborator already exists for this task
+        existing_collaborator = TaskCollaborator.query.filter_by(task_id=task_id, user_id=user_id).first()
+        if existing_collaborator:
+            flash('This collaborator is already added to the task.', 'warning')
+            return redirect(url_for('task', task_id=task_id))
+
+        # If collaborator doesn't exist, add them
+        collaborator = TaskCollaborator(task_id=task_id, user_id=user_id)
         db.session.add(collaborator)
         db.session.commit()
+
         flash('Collaborator has been added!', 'success')
         return redirect(url_for('task', task_id=task_id))
-    return render_template('add_collaborator.html', title='Add Collaborator', form=form)
+
+    return render_template('create_collaborator.html', title='Add Collaborator', form=form)

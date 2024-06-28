@@ -1,26 +1,56 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <div class="container">
-        <h2>{{ task.title }}</h2>
-        <p><strong>Description:</strong> {{ task.description }}</p>
-        <p><strong>Status:</strong> {{ task.status }}</p>
-        <p><strong>Priority:</strong> {{ task.priority }}</p>
-        <p><strong>Due Date:</strong> {{ task.due_date.strftime('%Y-%m-%d') }}</p>
-        <p><strong>Created At:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
-        <p><strong>Updated At:</strong> {{ task.updated_at.strftime('%Y-%m-%d') }}</p>
-        <hr>
+
+<div class="content-section">
+    <h3>Title : {{ task.title }}</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <p><strong>Description:</strong> {{ task.description }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Status:</strong> {{ task.status }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Priority:</strong> {{ task.priority }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Due Date:</strong> {{ task.due_date.strftime('%Y-%m-%d') }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Created At:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-6">
+            <p><strong>Updated At:</strong> {{ task.updated_at.strftime('%Y-%m-%d') }}</p>
+        </div>
+    </div>
+    <hr>
+</div>
+
+    <div class="content-section">
         <h3>Notes</h3>
         <ul class="list-group">
             {% for note in task.notes %}
-                <li class="list-group-item">{{ note.content }}</li>
+            <span class="note-content"> N° {{ note.id }} : {{ note.content }}</span>
             {% endfor %}
         </ul>
         <hr>
+    </div>
+    <div class="content-section">
         <h3>Collaborators</h3>
         <ul class="list-group">
             {% for collaborator in task.task_collaborators %}
-                <li class="list-group-item">{{ collaborator.user.username }}</li>
+                <span class="note-content">Collaborator N° {{ collaborator.id }} : {{ collaborator.user.username }}</span>
             {% endfor %}
         </ul>
     </div>

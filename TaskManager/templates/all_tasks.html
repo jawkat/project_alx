@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <h1>Tasks</h1>
+    <h3 div class="content-section">Tasks</h3>
     <table class="table table-bordered">
         <thead class="bg-steel">
             <tr>
@@ -12,8 +12,8 @@
                 <th>Status</th>
                 <th>Priority</th>
                 <th>Due Date</th>
-                <th>Created At</th>
-                <th>Updated At</th>
+                <th>Created</th>
+                <th>Updated</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -28,6 +28,14 @@
                     <td>{{ task.created_at.strftime('%Y-%m-%d') }}</td>
                     <td>{{ task.updated_at.strftime('%Y-%m-%d') }}</td>
                     <td class="table-actions">
+                        <a href="{{ url_for('new_note', task_id=task.id) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus"></i> *Note
+                        </a>
+                        <a href="{{ url_for('new_collaborator', task_id=task.id) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus"></i> *Collaborator
+                        </a>
+
+
                         <a href="{{ url_for('task', task_id=task.id) }}" class="btn btn-primary btn-sm">View</a>
                         <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-secondary btn-sm">Update</a>
 

@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from TaskManager.models import User, Task
 
 
-class RegistrationForm(FlaskForm):
+class RegistrationUserForm(FlaskForm):
     """ Regstration form """
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=50)])
