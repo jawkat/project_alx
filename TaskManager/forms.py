@@ -61,7 +61,7 @@ class UpdateAccountForm(FlaskForm):
                 raise ValidationError('That email is taken. Please choose a different one.')
 
 class TaskForm(FlaskForm):
-    """Form to create or update a task"""
+    """Form to create """
     title = StringField('Title', validators=[DataRequired(), Length(min=1, max=255)])
     description = TextAreaField('Description')
     status = SelectField('Status', choices=[
@@ -73,7 +73,23 @@ class TaskForm(FlaskForm):
         'Due Date', validators=[DataRequired()], default=datetime.utcnow ,format='%Y-%m-%d')
     submit = SubmitField('Save Task')
 
+    class TaskFormUpdate(FlaskForm):
+        """update a task"""
+        title = StringField('Title', validators=[DataRequired(), Length(min=1, max=255)])
+        description = TextAreaField('Description')
+        status = SelectField('Status', choices=[
+            ('in progress', 'In Progress'), ('completed','Completed'),('pending', 'Pending')
+            ], default='in progress')
+        priority = SelectField('Priority', choices=[('low', 'Low'), ('medium', 'Medium'),
+                                                    ('high', 'High')], default='medium')
+        due_date = DateField(
+            'Due Date', validators=[DataRequired()], default=datetime.utcnow ,format='%Y-%m-%d')
 
+
+
+
+
+    submit = SubmitField('Save Task')
 
 
 class NoteForm(FlaskForm):

@@ -9,8 +9,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                Are you sure you want to delete this task " Title : <strong>  {{task_title}}  </strong>" and all related notes and collaborators?
+                Are you sure you want to permanently delete this task " Title : <strong>  {{task_title}}  </strong>" and all related notes and collaborators?
+                <small class="text-danger ml-2"> This action is irreversible </small>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <form method="POST" action="{{ url_for('delete_task', task_id=task_id) }}">
