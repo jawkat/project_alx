@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, DateField
@@ -68,7 +69,8 @@ class TaskForm(FlaskForm):
         ], default='in progress')
     priority = SelectField('Priority', choices=[('low', 'Low'), ('medium', 'Medium'),
                                                 ('high', 'High')], default='medium')
-    due_date = DateField('Due Date', validators=[DataRequired()], format='%Y-%m-%d')
+    due_date = DateField(
+        'Due Date', validators=[DataRequired()], default=datetime.utcnow ,format='%Y-%m-%d')
     submit = SubmitField('Save Task')
 
 

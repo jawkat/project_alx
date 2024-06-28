@@ -156,6 +156,10 @@ def delete_task(task_id):
     task = Task.query.get_or_404(task_id)
     if task.user != current_user:
         abort(403)  # Forbidden error, user is not the owner of the task
+
+    Note.query.filter_by(task_id=task.id).delete()
+    TaskCollaborator.query.filter_by(task_id=task.id).delete()
+
     db.session.delete(task)
     db.session.commit()
     flash('Your task has been deleted!', 'success')

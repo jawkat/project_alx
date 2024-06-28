@@ -34,11 +34,14 @@ class Task(db.Model):
     description = db.Column(db.Text)
     status = db.Column(db.Enum('in progress', 'completed', 'pending'), default='in progress')
     priority = db.Column(db.Enum('low', 'medium', 'high'), default='medium')
-    due_date = db.Column(db.DateTime)
+    due_date = db.Column(db.DateTime, default=datetime.utcnow)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    notes = db.relationship('Note', backref='task', lazy=True)
-    task_collaborators = db.relationship('TaskCollaborator', backref='task', lazy=True)
+    notes = db.relationship(
+        'Note', backref='task', lazy=True, cascade='all, delete-orphan')
+
+    task_collaborators = db.relationship(
+        'TaskCollaborator', backref='task', lazy=True, cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"Task('{self.title}', '{self.status}', '{self.priority}')"
