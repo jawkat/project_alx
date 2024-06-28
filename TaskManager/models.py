@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     date_joined = db.Column(db.DateTime, default=datetime.now)
-    last_login = db.Column(db.DateTime)
+    last_login = db.Column(db.DateTime, default=datetime.now)
     tasks = db.relationship('Task', backref='user', lazy=True)
     task_collaborators = db.relationship('TaskCollaborator', backref='user', lazy=True)
 

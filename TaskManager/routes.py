@@ -61,6 +61,8 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
+            current_user.last_login = datetime.utcnow
+            db.session.commit()
             login_user(user, remember=form.remember.data)
             flash('Login successful.', 'success')
             next_page = request.args.get('next')

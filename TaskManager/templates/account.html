@@ -6,6 +6,12 @@
             <div class="media-body">
                 <h2 class="account-heading">{{ current_user.username }}</h2>
                 <p class="text-secondary">{{ current_user.email }}</p>
+                {% if current_user.last_login != None %}
+                <p class="text-secondary">Last seen : {{ current_user.last_login.strftime('%Y-%m-%d') }}</p>
+                {% else %}
+                <p class="text-secondary">Last seen : **** </p>
+                {% endif %}
+
             </div>
         </div>
         <form method="POST" action="" enctype="multipart/form-data">
