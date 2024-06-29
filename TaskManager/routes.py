@@ -20,7 +20,7 @@ def welcome():
 @app.route("/home")
 @login_required
 def home():
-    """ Home page display dashbord"""
+    """ Home page display some indicators dashbord """
    # Count total tasks for the current user
 
     num_tasks = Task.query.filter_by(user_id=current_user.id).count()
