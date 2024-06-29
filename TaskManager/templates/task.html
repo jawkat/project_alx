@@ -2,8 +2,20 @@
 
 {% block content %}
 
-<div class="content-section">
-    <h3>Title : {{ task.title }}</h3>
+<div class="float-right mt-4">
+    <a href="{{ url_for('new_note', task_id=task.id) }}" class="btn btn-success btn-lg mr-2">
+        <i class="fas fa-plus"></i> Add Note
+    </a>
+    <a href="{{ url_for('new_collaborator', task_id=task.id) }}" class="btn btn-success btn-lg">
+        <i class="fas fa-plus"></i> Add Collaborator
+    </a>
+</div>
+
+<br>
+<br>
+<br>
+<div class="content-section mt-4">
+    <h3 style="background-color: #254053; color: #ffffff; padding: 10px;">Title: {{ task.title }}</h3>
     <div class="row">
         <div class="col-md-12">
             <p><strong>Description:</strong> {{ task.description }}</p>
@@ -25,10 +37,8 @@
             <p><strong>Created At:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-6">
-
         </div>
         <div class="col-md-6">
             <p><strong>Updated At:</strong> {{ task.updated_at.strftime('%Y-%m-%d') }}</p>
@@ -37,21 +47,48 @@
     <hr>
 </div>
 
-    <div class="content-section">
-        <h3>Notes</h3>
-        <ul class="list-group">
-            {% for note in task.notes %}
-            <span class="note-content"> N° {{ note.id }} : {{ note.content }}</span>
-            {% endfor %}
-        </ul>
-        <hr>
-    </div>
-    <div class="content-section">
-        <h3>Collaborators</h3>
-        <ul class="list-group">
-            {% for collaborator in task.task_collaborators %}
-                <span class="note-content">Collaborator N° {{ collaborator.id }} : {{ collaborator.user.username }}</span>
-            {% endfor %}
-        </ul>
-    </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">N°</th>
+            <th scope="col">Note Content</th>
+            <th scope="col" class="text-center actions-column">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for note in task.notes %}
+        <tr>
+            <td class="text-center">{{ loop.index }}</td>
+            <td>{{ note.content }}</td>
+            <td class="text-center">
+                <a href="#" class="btn btn-sm btn-outline-secondary">Update</a>
+                <a href="#" class="btn btn-sm btn-outline-danger">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">N°</th>
+            <th scope="col">Collaborator Name</th>
+            <th scope="col" class="text-center actions-column">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for collaborator in task.task_collaborators %}
+        <tr>
+            <td class="text-center">{{ loop.index }}</td>
+            <td>{{ collaborator.user.username }}</td>
+            <td class="text-center">
+                <a href="#" class="btn btn-sm btn-outline-secondary">Update</a>
+                <a href="#" class="btn btn-sm btn-outline-danger">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock content %}

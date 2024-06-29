@@ -110,3 +110,13 @@ body {
 	font-size: 1rem;
 	font-weight: normal;
 }
+
+
+.index-column {
+    width: 50px;
+    text-align: center;
+}
+
+.actions-column {
+    width: 200px;
+}
