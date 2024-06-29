@@ -40,9 +40,6 @@
                 <a class="nav-item nav-link" href="{{ url_for('new_task') }}">New Task</a>
                 <a class="nav-item nav-link" href="{{ url_for('account') }}">{{ current_user.username }}'s Account</a>
                 <a class="nav-item nav-link" href="{{ url_for('logout') }}">Logout</a>
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="{{ url_for('all_tasks') }}"> added </a>
-                </div>
 
               {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>

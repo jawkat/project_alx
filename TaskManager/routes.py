@@ -17,15 +17,18 @@ def welcome():
 @app.route("/home")
 @login_required
 def home():
-    # Query statistics
-    num_tasks = Task.query.count()
 
-    # Count tasks by status
-    status_counts = db.session.query(Task.status, func.count(Task.id)).group_by(Task.status).all()
+   # Count total tasks for the current user
+    num_tasks = db.session.query(func.count(Task.id)).filter_by(user_id=current_user.id).scalar()
+
+    # Count tasks by status for the current user
+    status_counts = db.session.query(Task.status, func.count(Task.id)).filter_by(user_id=current_user.id).group_by(Task.status).all()
     num_tasks_by_status = {status: count for status, count in status_counts}
 
-    # Count collaborators
-    num_collaborators = TaskCollaborator.query.distinct(TaskCollaborator.user_id).count()
+    # Count distinct collaborators for the current user's tasks
+    num_collaborators = db.session.query(func.count(func.distinct(TaskCollaborator.user_id))).filter(TaskCollaborator.task_id.in_(
+        db.session.query(Task.id).filter_by(user_id=current_user.id)
+    )).scalar()
 
     # Render template with statistics
     return render_template('home.html', title='Home', num_tasks=num_tasks,
@@ -45,7 +48,7 @@ def register():
     form = RegistrationUserForm()
     if form.validate_on_submit():
         hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_pwd)
+        user = User(username=form.username.data, email=form.email.data.lower(), password=hashed_pwd)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -59,7 +62,7 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data.lower()).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             current_user.last_login = datetime.utcnow
             db.session.commit()
