@@ -22,7 +22,6 @@ def welcome():
 def home():
     """ Home page display some indicators dashbord """
    # Count total tasks for the current user
-
     num_tasks = Task.query.filter_by(user_id=current_user.id).count()
 
     # Count tasks by status for the current user
@@ -30,11 +29,13 @@ def home():
     num_tasks_by_status = {status: count for status, count in status_counts}
 
     # Count distinct collaborators for the current user's tasks
-    num_collaborators = db.session.query(func.count(func.distinct(TaskCollaborator.user_id))).filter(TaskCollaborator.task_id.in_(
+    num_collaborators = db.session.query(
+        func.count(func.distinct(TaskCollaborator.user_id))).filter(
+            TaskCollaborator.task_id.in_(
         db.session.query(Task.id).filter_by(user_id=current_user.id)
-    )).scalar()
+    )
+).scalar()
 
-    # Render template with statistics
     return render_template('home.html', title='Home', num_tasks=num_tasks,
                            num_tasks_by_status=num_tasks_by_status,
                            num_collaborators=num_collaborators)
@@ -68,8 +69,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data.lower()).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
-            current_user.last_login = datetime.utcnow
-            db.session.commit()
+
             login_user(user, remember=form.remember.data)
             flash('Login successful.', 'success')
             next_page = request.args.get('next')
@@ -81,6 +81,8 @@ def login():
 @app.route("/logout")
 def logout():
     """Route to handle user logout."""
+    current_user.last_login = datetime.utcnow()
+    db.session.commit()
     logout_user()
     return redirect(url_for('home'))
 
@@ -125,6 +127,9 @@ def new_task():
         flash('Your task has been created!', 'success')
         return redirect(url_for('all_tasks'))
     return render_template('create_task.html', title='New Task', form=form)
+
+
+
 
 @app.route("/task/<int:task_id>")
 def task(task_id):

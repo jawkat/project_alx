@@ -84,11 +84,6 @@ class TaskForm(FlaskForm):
                                                     ('high', 'High')], default='medium')
         due_date = DateField(
             'Due Date', validators=[DataRequired()], default=datetime.utcnow ,format='%Y-%m-%d')
-
-
-
-
-
     submit = SubmitField('Save Task')
 
 
