@@ -1,10 +1,13 @@
+""" all route names"""
 from datetime import datetime
 from flask import render_template, url_for, flash, redirect, request,abort
-from TaskManager import app, db, bcrypt
-from TaskManager.forms import RegistrationUserForm, LoginForm, UpdateAccountForm, TaskForm, NoteForm, TaskCollaboratorForm
-from TaskManager.models import User, Task, Note, TaskCollaborator
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
+from TaskManager import app, db, bcrypt
+from TaskManager.forms import (RegistrationUserForm, LoginForm, UpdateAccountForm,
+        TaskForm, NoteForm, TaskCollaboratorForm)
+from TaskManager.models import User, Task, Note, TaskCollaborator
+
 
 
 @app.route("/")
@@ -17,9 +20,10 @@ def welcome():
 @app.route("/home")
 @login_required
 def home():
-
+    """ Home page display dashbord"""
    # Count total tasks for the current user
-    num_tasks = db.session.query(func.count(Task.id)).filter_by(user_id=current_user.id).scalar()
+
+    num_tasks = Task.query.filter_by(user_id=current_user.id).count()
 
     # Count tasks by status for the current user
     status_counts = db.session.query(Task.status, func.count(Task.id)).filter_by(user_id=current_user.id).group_by(Task.status).all()
