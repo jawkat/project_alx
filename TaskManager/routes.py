@@ -71,6 +71,11 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
 
             login_user(user, remember=form.remember.data)
+
+            current_user.last_login = datetime.utcnow()
+            db.session.add(current_user)
+            db.session.commit()
+
             flash('Login successful.', 'success')
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
@@ -82,6 +87,7 @@ def login():
 def logout():
     """Route to handle user logout."""
     current_user.last_login = datetime.utcnow()
+    db.session.add(current_user)
     db.session.commit()
     logout_user()
     return redirect(url_for('home'))
@@ -94,7 +100,11 @@ def account():
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.email = form.email.data
+
+        current_user.last_login = datetime.utcnow()
+        db.session.add(current_user)
         db.session.commit()
+
         flash('Your account has been updated!', 'success')
         return redirect(url_for('account'))
     elif request.method == 'GET':
@@ -130,12 +140,31 @@ def new_task():
 
 
 
-
 @app.route("/task/<int:task_id>")
 def task(task_id):
     """Route to view a specific task."""
+
+    if not current_user.is_authenticated:
+        flash('You need to be logged in to access this page.', 'warning')
+        return redirect(url_for('login'))
+
+    # get all related data with task (notes and collborators)
     task = Task.query.get_or_404(task_id)
-    return render_template('task.html', title=task.title, task=task)
+
+        # Find the previous task
+    previous_task = Task.query.filter(
+        Task.id < task_id, Task.user_id == current_user.id).order_by(Task.id.desc()).first()
+
+
+    # Find the next task
+    next_task = Task.query.filter(
+        Task.id > task_id, Task.user_id == current_user.id).order_by(Task.id.asc()).first()
+
+    return render_template('task.html',
+                           title=task.title,
+                           task=task,
+                           previous_task=previous_task,
+                           next_task=next_task)
 
 @app.route("/task/<int:task_id>/update", methods=['GET', 'POST'])
 @login_required

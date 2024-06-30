@@ -41,7 +41,9 @@ body {
   }
 
   .table-actions a {
-	margin-right: 5px;
+	margin-right: 1px;
+
+
   }
 
   .container {
@@ -118,5 +120,7 @@ body {
 }
 
 .actions-column {
-    width: 200px;
+    width:210px;
+
+
 }

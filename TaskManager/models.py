@@ -64,6 +64,6 @@ class TaskCollaborator(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
+    
     def __repr__(self):
         return f"TaskCollaborator(Task ID: '{self.task_id}', User ID: '{self.user_id}')"

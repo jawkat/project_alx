@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% import 'macros.html' as macros %}
 {% block content %}
-    <h3 class="content-section">Tasks</h3>
+    <h3 class="content-section">Tasks : we have to add filter here</h3>
     <table class="table table-bordered">
         <thead class="bg-steel">
             <tr>
@@ -12,7 +12,7 @@
                 <th>Due Date</th>
                 <th>Created</th>
                 <th>Updated</th>
-                <th>Actions</th>
+                <th class="text-center actions-column">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -26,12 +26,7 @@
                     <td>{{ task.created_at.strftime('%Y-%m-%d') }}</td>
                     <td>{{ task.updated_at.strftime('%Y-%m-%d') }}</td>
                     <td class="table-actions">
-                        <a href="{{ url_for('new_note', task_id=task.id) }}" class="btn btn-success btn-sm">
-                            <i class="fas fa-plus"></i> Note
-                        </a>
-                        <a href="{{ url_for('new_collaborator', task_id=task.id) }}" class="btn btn-success btn-sm">
-                            <i class="fas fa-plus"></i> Collaborator
-                        </a>
+
                         <a href="{{ url_for('task', task_id=task.id) }}" class="btn btn-primary btn-sm">View</a>
                         <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-secondary btn-sm">Update</a>
 
