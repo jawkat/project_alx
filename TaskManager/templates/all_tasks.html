@@ -25,7 +25,7 @@
                     <td>{{ task.due_date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ task.created_at.strftime('%Y-%m-%d') }}</td>
                     <td>{{ task.updated_at.strftime('%Y-%m-%d') }}</td>
-                    <td class="table-actions">
+                    <td class="table-actions d-flex  justify-content-center">
 
                         <a href="{{ url_for('task', task_id=task.id) }}" class="btn btn-primary btn-sm">View</a>
                         <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-secondary btn-sm">Update</a>
