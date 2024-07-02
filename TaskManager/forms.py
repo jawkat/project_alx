@@ -96,3 +96,24 @@ class TaskCollaboratorForm(FlaskForm):
     """Form to add a collaborator to a task"""
     user_id = SelectField('User', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Add Collaborator')
+
+
+class RequestResetPassword(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+    def validate_email(self, email):
+        """Validate email on account update"""
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user is None:
+                raise ValidationError('There is no email, please Register.')
+
+class ConfirmResetPassword:
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Confirm Password Reset')
+
+class RequestResetPasswordForm:
+    pass

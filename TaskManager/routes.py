@@ -4,13 +4,14 @@ from flask import render_template, url_for, flash, redirect, request,abort
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
 from TaskManager import app, db, bcrypt
-from TaskManager.forms import (RegistrationUserForm, LoginForm, UpdateAccountForm,
-        TaskForm, NoteForm, TaskCollaboratorForm)
+from TaskManager.forms import (ConfirmResetPassword, RegistrationUserForm, LoginForm, UpdateAccountForm,
+        TaskForm, NoteForm, TaskCollaboratorForm, RequestResetPasswordForm, ConfirmResetPassword)
 from TaskManager.models import User, Task, Note, TaskCollaborator
 
 
 
-@app.route("/")
+
+@app.route("/")  
 @app.route("/welcome")
 def welcome():
     """Route to display all tasks on the home page."""
