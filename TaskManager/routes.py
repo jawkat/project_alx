@@ -4,14 +4,17 @@ from flask import render_template, url_for, flash, redirect, request,abort
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import func
 from TaskManager import app, db, bcrypt
-from TaskManager.forms import (ConfirmResetPassword, RegistrationUserForm, LoginForm, UpdateAccountForm,
-        TaskForm, NoteForm, TaskCollaboratorForm, RequestResetPasswordForm, ConfirmResetPassword)
+from TaskManager.forms import (RegistrationUserForm, LoginForm, UpdateAccountForm,
+        CreateTaskForm, UpdateTaskForm, NoteForm, TaskCollaboratorForm,
+        NoteFormUpdate)
+
+
 from TaskManager.models import User, Task, Note, TaskCollaborator
 
 
 
 
-@app.route("/")  
+@app.route("/")
 @app.route("/welcome")
 def welcome():
     """Route to display all tasks on the home page."""
@@ -125,12 +128,11 @@ def all_tasks():
 @login_required
 def new_task():
     """Route to create a new task."""
-    form = TaskForm()
+    form = CreateTaskForm()
     if form.validate_on_submit():
-        due_date = form.due_date.data
         task = Task(
             title=form.title.data, description=form.description.data, status=form.status.data,
-            priority=form.priority.data, due_date=due_date,user_id=current_user.id,
+            priority=form.priority.data, due_date=form.due_date.data,user_id=current_user.id,
             created_at=datetime.utcnow(), updated_at=datetime.utcnow())
 
         db.session.add(task)
@@ -174,7 +176,7 @@ def update_task(task_id):
     task = Task.query.get_or_404(task_id)
     if task.user != current_user:
         abort(403)  # Forbidden error, user is not the owner of the task
-    form = TaskForm()
+    form = UpdateTaskForm()
     if form.validate_on_submit():
         task.title = form.title.data
         task.description = form.description.data
@@ -249,3 +251,61 @@ def new_collaborator(task_id):
         return redirect(url_for('task', task_id=task_id))
 
     return render_template('create_collaborator.html', title='Add Collaborator', form=form)
+
+@app.route("/note/<int:note_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_note(note_id):
+    """Route pour mettre à jour une note existante."""
+    note = Note.query.get_or_404(note_id)
+    task = Task.query.get_or_404(note.task_id)
+
+    if task.user != current_user:
+        abort(403)  # Erreur 403, l'utilisateur n'est pas le propriétaire de la tâche
+
+    form = NoteFormUpdate()
+
+    if form.validate_on_submit():
+        note.content = form.content.data
+        note.updated_at = datetime.utcnow()
+        db.session.commit()
+        flash('Votre note a été mise à jour !', 'success')
+        return redirect(url_for('task', task_id=note.task_id))
+    elif request.method == 'GET':
+        form.content.data = note.content
+
+    return render_template('create_note.html', title='Update Note', form=form)
+
+
+@app.route("/note/<int:note_id>/delete", methods=['POST'])
+@login_required
+def remove_note(note_id):
+    """Route to delete an existing note"""
+
+    note = Note.query.get_or_404(note_id)
+    task = Task.query.get_or_404(note.task_id)
+
+    if task.user != current_user:
+        abort(403)  # Forbidden error, user is not the owner of the task
+
+    db.session.delete(note)
+    db.session.commit()
+    flash('Your note has been deleted!', 'success')
+
+        # Find the previous task
+    previous_task = Task.query.filter(
+        Task.id < note.task_id, Task.user_id == current_user.id).order_by(Task.id.desc()).first()
+
+    # Find the next task
+    next_task = Task.query.filter(
+        Task.id > note.task_id, Task.user_id == current_user.id).order_by(Task.id.asc()).first()
+
+
+    return redirect(url_for('task', task_id=note.task_id,
+                            title=task.title, note_id=note_id,
+                            task=task,
+                            previous_task=previous_task,
+                            next_task=next_task))
+
+
+
+

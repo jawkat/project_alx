@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-
+{% import 'macros_note.html' as macros %}
 {% block content %}
 
 <div class="float-right mt-4">
@@ -79,8 +79,19 @@
             <td class="text-center" style="width:100px;">{{ note.updated_at.strftime('%Y-%m-%d') }}</td>
             <td>{{ note.content }}</td>
             <td class="text-center d-flex  justify-content-center">
-                <a href="#" class="btn btn-primary btn-sm">Update</a>
-                <a href="#" class="btn btn-danger btn-sm">Remove</a>
+                <a href="{{ url_for('update_note', note_id=note.id) }}" class="btn btn-primary btn-sm">Update</a>
+
+                <!-- Button to trigger modal -->
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ note.id }}">
+                    Remove
+                </button>
+                <!-- Call the macro to generate the modal -->
+                {{ macros.delete_modal("Confirm Task Deletion",note.id) }}
+
+
+
+
+
             </td>
         </tr>
         {% endfor %}

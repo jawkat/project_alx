@@ -1,10 +1,12 @@
+""" all forms """
 from datetime import datetime
 from flask_wtf import FlaskForm
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, DateField
+from wtforms import (StringField, PasswordField,
+                     SubmitField, BooleanField, TextAreaField, SelectField, DateField)
 
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from TaskManager.models import User, Task
+from TaskManager.models import User
 
 
 class RegistrationUserForm(FlaskForm):
@@ -19,11 +21,13 @@ class RegistrationUserForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
+        """ validate username """
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError('That username is taken. Please choose a different one.')
 
     def validate_email(self, email):
+        """ validate email """
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
@@ -44,7 +48,7 @@ class UpdateAccountForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=50)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
-    submit = SubmitField('Update')
+    submit = SubmitField('Update Account')
 
     def validate_username(self, username):
         """Validate username on account update"""
@@ -60,7 +64,7 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
 
-class TaskForm(FlaskForm):
+class CreateTaskForm(FlaskForm):
     """Form to create """
     title = StringField('Title', validators=[DataRequired(), Length(min=1, max=255)])
     description = TextAreaField('Description')
@@ -73,24 +77,33 @@ class TaskForm(FlaskForm):
         'Due Date', validators=[DataRequired()], default=datetime.utcnow ,format='%Y-%m-%d')
     submit = SubmitField('Save Task')
 
-    class TaskFormUpdate(FlaskForm):
-        """update a task"""
-        title = StringField('Title', validators=[DataRequired(), Length(min=1, max=255)])
-        description = TextAreaField('Description')
-        status = SelectField('Status', choices=[
-            ('in progress', 'In Progress'), ('completed','Completed'),('pending', 'Pending')
-            ], default='in progress')
-        priority = SelectField('Priority', choices=[('low', 'Low'), ('medium', 'Medium'),
-                                                    ('high', 'High')], default='medium')
-        due_date = DateField(
-            'Due Date', validators=[DataRequired()], default=datetime.utcnow ,format='%Y-%m-%d')
-    submit = SubmitField('Save Task')
+class UpdateTaskForm(FlaskForm):
+    """Form to update a task"""
+    title = StringField('Title', validators=[DataRequired(), Length(min=1, max=255)])
+    description = TextAreaField('Description')
+    status = SelectField('Status', choices=[
+        ('in progress', 'In Progress'), ('completed','Completed'),('pending', 'Pending')
+        ], default='in progress')
+    priority = SelectField('Priority', choices=[('low', 'Low'), ('medium', 'Medium'),
+                                                ('high', 'High')], default='medium')
+    due_date = DateField(
+        'Due Date', validators=[DataRequired()], default=datetime.utcnow ,format='%Y-%m-%d')
+    submit = SubmitField('Update Task')
 
 
 class NoteForm(FlaskForm):
     """Form to create or update a note"""
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Save Note')
+
+class NoteFormUpdate(FlaskForm):
+    """Form to create or update a note"""
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Update Note')
+
+
+
+
 
 class TaskCollaboratorForm(FlaskForm):
     """Form to add a collaborator to a task"""
@@ -99,6 +112,7 @@ class TaskCollaboratorForm(FlaskForm):
 
 
 class RequestResetPassword(FlaskForm):
+    """ request reset password """
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
@@ -110,10 +124,12 @@ class RequestResetPassword(FlaskForm):
                 raise ValidationError('There is no email, please Register.')
 
 class ConfirmResetPassword:
+    """ confirme resets password"""
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Confirm Password Reset')
 
 class RequestResetPasswordForm:
+    """ Form"""
     pass
