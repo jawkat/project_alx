@@ -6,7 +6,7 @@ Landing Page
 
 {% block content %}
 <!-- Header Section -->
-<header class="text-black text-center py-5" style="background: rgba(0, 0, 0, 0.5);">
+<header class="text-black text-center py-5">
     <div class="container">
         <div class="jumbotron mt-5">
             <h1 class="display-4">Welcome to Task Manager!</h1>
@@ -31,7 +31,7 @@ Landing Page
         </div>
       </div>
       <div class="col-lg-6 mb-4">
-        <img src="{{ url_for('static', filename='f1.PNG') }}" alt="Task Management" class="img-fluid">
+        <img src="https://via.placeholder.com/500" alt="Task Management" class="img-fluid">
       </div>
     </div>
 
@@ -43,7 +43,7 @@ Landing Page
         </div>
       </div>
       <div class="col-lg-6 mb-4 order-lg-1">
-        <img src="{{ url_for('static', filename='f2.PNG') }}" alt="Notes" class="img-fluid">
+        <img src="https://via.placeholder.com/500" alt="Notes" class="img-fluid">
       </div>
     </div>
 
@@ -55,7 +55,7 @@ Landing Page
         </div>
       </div>
       <div class="col-lg-6 mb-4">
-        <img src="{{ url_for('static', filename='f3.PNG') }}" alt="Collaborators" class="img-fluid">
+        <img src="https://via.placeholder.com/500" alt="Collaborators" class="img-fluid">
       </div>
     </div>
 
@@ -67,7 +67,7 @@ Landing Page
         </div>
       </div>
       <div class="col-lg-6 mb-4 order-lg-1">
-        <img src="{{ url_for('static', filename='f4.PNG') }}" alt="Notifications" class="img-fluid">
+        <img src="https://via.placeholder.com/500" alt="Notifications" class="img-fluid">
       </div>
     </div>
 
@@ -79,7 +79,7 @@ Landing Page
         </div>
       </div>
       <div class="col-lg-6 mb-4">
-        <img src="{{ url_for('static', filename='f5.PNG') }}" alt="Reports" class="img-fluid">
+        <img src="https://via.placeholder.com/500" alt="Reports" class="img-fluid">
       </div>
     </div>
   </div>
@@ -87,15 +87,16 @@ Landing Page
 
 <!-- Call to Action Section -->
 <section class="bg-light py-3">
-  <div class="container  text-center ">
+  <div class="container">
     <h2>Ready to Get Started?</h2>
     <p class="lead">Sign up now and start managing your tasks more effectively.</p>
     <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Sign Up Now</a>
 
     <p class="mt-3">Contact us:</p>
-        <a href="#jawad">Jawad - Morocco</a>
-        <br>
-        <a href="#abdelrahman">Abdelrahman - Egypt</a>
+    <ul>
+        <li><a href="#jawad">Jawad - Morocco</a></li>
+        <li><a href="#abdelrahman">Abdelrahman - Egypt</a></li>
+     </ul>
   </div>
 </section>
 

@@ -1,89 +1,91 @@
 body {
-	width: 100%;
-	height: 100vh;
-	font-family: Arial, sans-serif;
-	background-image: url('my-main.jpg');
-	background-position: center;
-	background-size: cover; /* Ensures the background image covers the entire body */
-	position: relative;
-	margin-top: 5rem;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-	color: #030303;
-  }
-
-  .bg-steel {
-	background-color: #254053;
-	color: #ffffff;
-  }
-
-  /* Table Styles */
-  .table {
-	width: 100%;
-	margin: 20px 0;
-	border-collapse:collapse;
-  }
-
-  .table th, .table td {
-	border: 1px solid #dddddd;
-	padding: 4px;
-	text-align: left;
-  }
-
-  .table th {
-	background-color: #254053;
-	color: #ffffff;
-  }
-
-  .table td {
-	/* background-color: #f9f9f9; */
-	background: #ffffffe5;
-  }
-
-  .table-actions a {
-	margin-right: 1px;
-
-
-  }
-/* totalite de la page */
-  .container {
-	width: 95%;
-	max-width: 1400px;
-	margin: 0 auto;
-  }
-
-  /* section dans la page */
-  .content-section {
-	background: #ffffffe5;
-	padding: 8px;
-	border-radius: 2px;
-	margin-top: 20px;
-  }
-
-  .account-heading {
-	font-size: 3rem;
-	background-color: #254053;
-	padding-left: 10px;
-	color: #ffffff;
-  }
-
-  /* Navigation Bar Styles */
-  .site-header .navbar-nav .nav-link {
-	color: #fdfeffa4;
-
-  }
-
-  .site-header .navbar-nav .nav-link:hover {
-	color: #f1f517;
-  }
-
-
-  .note-content {
-	font-size: 1rem;
-	font-weight: normal;
+    width: 100%;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-image: url('my-main.jpg'); */
+    background-position: center;
+    background-size: cover; /* Ensure the background image covers the entire body */
+    background-attachment: fixed; /* Keep the background image fixed while scrolling */
+    position: relative;
+    margin-top: 5rem;
+    color: #000000;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: #000000;
+}
+
+.bg-steel {
+    background-color: #254053;
+    color: #000000;
+}
+
+/* Table Styles */
+.table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    border: 1px solid #dddddd;
+    padding: 4px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #254053;
+    color: #ffffff;
+}
+
+.table td {
+    background: #ffffffe5;
+}
+
+.table-actions a {
+    margin-right: 1px;
+}
+
+.container {
+    width: 95%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.content-section {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 20px;
+    color: #15008b; /* Maintain white text color */
+	font-size: 1.5rem;
+
+
+
+}
+
+.jumbotron {
+    padding: 2rem;
+    margin-bottom: 2rem;
+    background-color: rgba(255,255,255,0.9); /* Semi-transparent background color */
+    border-radius: 0.3rem;
+    color: #15008b; /* Maintain white text color */
+}
+
+/* Navigation Bar Styles */
+.site-header .navbar-nav .nav-link {
+    color: #fdfeffa4;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: #f1f517;
+}
+
+.note-content {
+    font-size: 1rem;
+    font-weight: normal;
+}
 
 .index-column {
     width: 50px;
@@ -91,13 +93,29 @@ body {
 }
 
 .actions-column {
-    width:210px;
+    width: 210px;
 }
 
+.feature-item {
+    margin-top: 2rem;
+}
 
-.jumbotron {
-    padding: 2rem;
-    margin-bottom: 2rem;
-    background-color: #ffffffe5; /* Couleur semi-transparente de fond */
-    border-radius: 0.3rem;
+.feature-item img {
+    max-width: 100%;
+    border-radius: 8px;
+    transition: transform 0.5s ease-in-out; /* Add smooth transition */
+}
+
+.feature-item img:hover {
+    transform: rotate(10deg); /* Rotate the image on hover */
+}
+
+/* Footer Styles */
+footer {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+}
+
+footer p {
+    margin: 0;
 }

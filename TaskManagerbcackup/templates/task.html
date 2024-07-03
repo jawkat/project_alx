@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="float-right mt-4">
+
+    {% if previous_task %}
+    <a href="{{ url_for('task', task_id=previous_task.id) }}" class="btn btn-secondary btn-2g mr-1">
+        <i class="fas fa-arrow-left"></i> Previous Task
+    </a>
+    {% endif %}
+
+    {% if next_task %}
+    <a href="{{ url_for('task', task_id=next_task.id) }}" class="btn btn-info btn-2g mr-1">
+        <i class="fas fa-arrow-right"></i> Next Task
+    </a>
+    {% endif %}
+
+    <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-warning btn-2g">Update Task</a>
+
+    <a href="{{ url_for('new_note', task_id=task.id) }}" class="btn btn-success btn-2g mr-1">
+        <i class="fas fa-plus"></i> Add Note
+    </a>
+    <a href="{{ url_for('new_collaborator', task_id=task.id) }}" class="btn btn-success btn-2g">
+        <i class="fas fa-plus"></i> Add Collaborator
+    </a>
+</div>
+
+<br>
+<br>
+<div class="content-section mt-4">
+    <h3 style="background-color: #254053; color: #ffffff; padding: 10px;">Title: {{ task.title }}</h3>
+    <div class="row">
+        <div class="col-md-12">
+            <p><strong>Description:</strong> {{ task.description }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Status:</strong> {{ task.status }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Priority:</strong> {{ task.priority }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Due Date:</strong> {{ task.due_date.strftime('%Y-%m-%d') }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Created At:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <p><strong>Updated At:</strong> {{ task.updated_at.strftime('%Y-%m-%d') }}</p>
+        </div>
+    </div>
+    <hr>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">N°</th>
+            <th scope="col" class="text-center">Created at</th>
+            <th scope="col" class="text-center">Updated at</th>
+            <th scope="col">Note Content</th>
+            <th scope="col" class="text-center actions-column">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for note in task.notes %}
+        <tr>
+            <td class="text-center">{{ loop.index }}</td>
+            <td class="text-center" style="width:100px;">{{ note.created_at.strftime('%Y-%m-%d') }}</td>
+            <td class="text-center" style="width:100px;">{{ note.updated_at.strftime('%Y-%m-%d') }}</td>
+            <td>{{ note.content }}</td>
+            <td class="text-center d-flex  justify-content-center">
+                <a href="#" class="btn btn-primary btn-sm">Update</a>
+                <a href="#" class="btn btn-danger btn-sm">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col" class="text-center">N°</th>
+            <th scope="col">Collaborator Name</th>
+            <th scope="col" class="text-center actions-column">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for collaborator in task.task_collaborators %}
+        <tr>
+            <td class="text-center">{{ loop.index }}</td>
+            <td>{{ collaborator.user.username }}</td>
+            <td class="text-center">
+                <a href="#" class="btn btn-primary btn-sm">Update</a>
+                <a href="#" class="btn btn-danger btn-sm">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}

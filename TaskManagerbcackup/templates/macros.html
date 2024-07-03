@@ -1,0 +1,25 @@
+{% macro delete_modal(title,  task_id, task_title) %}
+<div class="modal fade" id="deleteModal{{ task_id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ task_id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel{{ task_id }}">{{ title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to permanently delete this task " Title : <strong>  {{task_title}}  </strong>" and all related notes and collaborators?
+                <small class="text-danger ml-2"> This action is irreversible </small>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form method="POST" action="{{ url_for('delete_task', task_id=task_id) }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

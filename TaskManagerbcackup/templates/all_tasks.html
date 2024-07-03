@@ -1,10 +1,7 @@
 {% extends "layout.html" %}
 {% import 'macros.html' as macros %}
-
 {% block content %}
-
-    <input class="form-control" id="myInput" type="text" placeholder="Search..">
-
+    <h3 class="content-section">Tasks : we have to add filter here</h3>
     <table class="table table-bordered">
         <thead class="bg-steel">
             <tr>
@@ -18,7 +15,7 @@
                 <th class="text-center actions-column">Actions</th>
             </tr>
         </thead>
-        <tbody id="myTable">
+        <tbody>
             {% for task in tasks %}
                 <tr>
                     <td class="article-title">{{ task.title }}</td>
@@ -28,28 +25,23 @@
                     <td>{{ task.due_date.strftime('%Y-%m-%d') }}</td>
                     <td>{{ task.created_at.strftime('%Y-%m-%d') }}</td>
                     <td>{{ task.updated_at.strftime('%Y-%m-%d') }}</td>
-                    <td class="table-actions d-flex justify-content-center">
+                    <td class="table-actions d-flex  justify-content-center">
+
                         <a href="{{ url_for('task', task_id=task.id) }}" class="btn btn-primary btn-sm">View</a>
                         <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-secondary btn-sm">Update</a>
+
+
+                        <!-- Button to trigger modal -->
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ task.id }}">
                             Remove
                         </button>
+                        <!-- Call the macro to generate the modal -->
                         {{ macros.delete_modal("Confirm Task Deletion", task.id, task.title) }}
                     </td>
                 </tr>
+
+
             {% endfor %}
         </tbody>
     </table>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#myInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function() {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            });
-        });
-    </script>
-{% endblock %}
+{% endblock content %}
