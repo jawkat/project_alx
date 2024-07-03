@@ -1,0 +1,26 @@
+<!-- {% macro delete_collaborator_modal(title, taskcollaborator_id) %}
+<div class="modal fade" id="deleteCollaboratorModal{{ taskcollaborator_id }}" tabindex="-1" role="dialog" aria-labelledby="deleteCollaboratorModalLabel{{ taskcollaborator_id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteCollaboratorModalLabel{{ taskcollaborator_id }}">{{ title }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to permanently delete this collaborator?
+                <small class="text-danger ml-2"> This action is irreversible </small>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                <form method="POST" action="{{ url_for('remove_collaborator', taskcollaborator_id=taskcollaborator_id) }}">
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %} -->
