@@ -7,7 +7,7 @@ from TaskManager import app, db, bcrypt, mail
 from TaskManager.forms import (ResetPasswordForm, RequestResetForm, RegistrationUserForm, LoginForm, UpdateAccountForm,
         CreateTaskForm, UpdateTaskForm, NoteForm, TaskCollaboratorForm,
         NoteFormUpdate)
-
+import logging
 
 from TaskManager.models import User, Task, Note, TaskCollaborator
 from flask_mail import Message
@@ -15,15 +15,15 @@ from flask_mail import Message
 
 
 @app.route("/")
-@app.route("/welcome")
-def welcome():
-    """Route to display all tasks on the home page."""
-    return render_template('welcome.html')
-
-
 @app.route("/home")
-@login_required
 def home():
+    """Route to display all tasks on the home page."""
+    return render_template('home.html')
+
+
+@app.route("/dashbord")
+@login_required
+def dashbord():
     """ Home page display some indicators dashbord """
    # Count total tasks for the current user
     num_tasks = Task.query.filter_by(user_id=current_user.id).count()
@@ -40,7 +40,7 @@ def home():
     )
 ).scalar()
 
-    return render_template('home.html', title='Home', num_tasks=num_tasks,
+    return render_template('dashbord.html', title='Dashbord', num_tasks=num_tasks,
                            num_tasks_by_status=num_tasks_by_status,
                            num_collaborators=num_collaborators)
 
@@ -314,7 +314,7 @@ def reset_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
-        flash('email has been sent with ins to res your password', 'info')
+        flash('email has been sent with instruction to reset your password', 'info')
         return redirect(url_for('login'))
     return render_template('request_reset.html', title='Reset Password', form=form)
 
@@ -323,10 +323,11 @@ def reset_token(token):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     user = User.verify_reset_token(token)
+    print(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request'))
-    
+
     form = ResetPasswordForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -334,7 +335,7 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
-    
+
     return render_template('token_reset.html', title='Reset Password', form=form)
 
 def send_reset_email(user):
@@ -343,4 +344,8 @@ def send_reset_email(user):
     msg.body = f'''To reset your password, visit the following link:
 {url_for('reset_token', token=token, _external=True)}
 '''
-    
+    try:
+        mail.send(msg)
+        logging.info(f"Password reset email sent to {user.email}")
+    except Exception as e:
+        logging.error(f"Failed to send email: {e}")

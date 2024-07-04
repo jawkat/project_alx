@@ -1,8 +1,9 @@
 """ Models """
 from datetime import datetime
 from flask_login import UserMixin
-from TaskManager import db, login_manager,app
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
+from TaskManager import db, login_manager,app
+
 
 
 
@@ -26,14 +27,14 @@ class User(db.Model, UserMixin):
 
 
     def get_reset_token(self, expires_sec=1800):
-        s = Serializer(app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
+        s = Serializer(app.config['SECRET_KEY'])
+        return s.dumps({'user_id': self.id})
 
     @staticmethod
-    def verify_reset_token(token):
+    def verify_reset_token(token,expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
+            user_id = s.loads(token,max_age=expires_sec)['user_id']
         except Exception:
             return None
         return User.query.get(user_id)
@@ -41,19 +42,19 @@ class User(db.Model, UserMixin):
 
 
 
-    def get_reset(self):
-        serial =  Serializer(app.config['SECRET_KEY'])
-        return serial.dumps({'user_id': self.id}).decode('utf-8')
+    # def get_reset(self):
+    #     serial =  Serializer(app.config['SECRET_KEY'])
+    #     return serial.dumps({'user_id': self.id}).decode('utf-8')
 
-    @staticmethod
-    def verify_token(token, expiration=1800):
-        serial = Serializer(app.config['SECRET_KEY'], expiration)
-        try:
-            user_id = serial.loads(token)['user_id']
-        except :
-            return None
+    # @staticmethod
+    # def verify_token(token, expiration=1800):
+    #     serial = Serializer(app.config['SECRET_KEY'], expiration)
+    #     try:
+    #         user_id = serial.loads(token)['user_id']
+    #     except :
+    #         return None
 
-        return User.query.get(user_id)
+    #     return User.query.get(user_id)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -100,4 +101,3 @@ class TaskCollaborator(db.Model):
 
     def __repr__(self):
         return f"TaskCollaborator(Task ID: '{self.task_id}', User ID: '{self.user_id}')"
-
