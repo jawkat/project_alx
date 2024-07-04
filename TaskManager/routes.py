@@ -340,7 +340,7 @@ def reset_token(token):
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    msg = Message('password Reset Request', sender='noreply@demo.com', recipients=[user.email])
+    msg = Message('password Reset Request', sender=('TaskManager', 'noreply@demo.com'), recipients=[user.email])
     msg.body = f'''To reset your password, visit the following link:
 {url_for('reset_token', token=token, _external=True)}
 '''

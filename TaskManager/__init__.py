@@ -9,7 +9,7 @@ from flask_mail import Mail
 app = Flask(__name__)
 
 # Set the secret key
-app.config['SECRET_KEY'] = 'secret_key'
+app.config['SECRET_KEY'] = os.urandom(30)
 
 # Set up the sqlite database path and URI
 DB_NAME = "First_base"
