@@ -4,7 +4,7 @@
 TaskManager is a comprehensive task management application designed to streamline task assignment and collaboration among team members. It allows users to create tasks, assign collaborators, and add notes to tasks efficiently.
 
 
-![TaskManger](project_alx/TaskManager/static/readme.png)
+![TaskManger](/TaskManager/static/readme.png)
 
 
 ## Features
