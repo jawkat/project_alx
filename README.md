@@ -3,6 +3,10 @@
 
 TaskManager is a comprehensive task management application designed to streamline task assignment and collaboration among team members. It allows users to create tasks, assign collaborators, and add notes to tasks efficiently.
 
+
+![TaskManger](project_alx/TaskManager/static/readme.png)
+
+
 ## Features
 
 - **User Authentication:** Secure login and registration using Flask-Login.
@@ -23,7 +27,7 @@ TaskManager is a comprehensive task management application designed to streamlin
 2. Create and activate a virtual environment:
     ```bash
     python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    source venv/bin/activate
     ```
 
 3. Install dependencies:
