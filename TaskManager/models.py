@@ -1,8 +1,10 @@
 """ Models """
 from datetime import datetime
 from flask_login import UserMixin
+from flask import current_app
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
-from TaskManager import db, login_manager,app
+from TaskManager import db, login_manager
+
 
 
 
@@ -27,12 +29,12 @@ class User(db.Model, UserMixin):
 
 
     def get_reset_token(self, expires_sec=1800):
-        s = Serializer(app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         return s.dumps({'user_id': self.id})
 
     @staticmethod
     def verify_reset_token(token,expires_sec=1800):
-        s = Serializer(app.config['SECRET_KEY'])
+        s = Serializer(current_app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token,max_age=expires_sec)['user_id']
         except Exception:
@@ -43,12 +45,12 @@ class User(db.Model, UserMixin):
 
 
     # def get_reset(self):
-    #     serial =  Serializer(app.config['SECRET_KEY'])
+    #     serial =  Serializer(current_app.config['SECRET_KEY'])
     #     return serial.dumps({'user_id': self.id}).decode('utf-8')
 
     # @staticmethod
     # def verify_token(token, expiration=1800):
-    #     serial = Serializer(app.config['SECRET_KEY'], expiration)
+    #     serial = Serializer(current_app.config['SECRET_KEY'], expiration)
     #     try:
     #         user_id = serial.loads(token)['user_id']
     #     except :
