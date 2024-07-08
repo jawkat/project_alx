@@ -15,7 +15,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <form method="POST" action="{{ url_for('delete_task', task_id=task_id) }}">
+                <form method="POST" action="{{ url_for('tasks.delete_task', task_id=task_id) }}">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </div>

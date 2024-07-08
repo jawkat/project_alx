@@ -29,7 +29,7 @@ bcrypt = Bcrypt(app)
 
 # Initialize Flask-Login
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
@@ -40,8 +40,6 @@ app.config['MAIL_DEFAULT_SENDER'] = 'noreply@demo.com'
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 
-print(os.environ.get('MAIL_USERNAME'))
-print(os.environ.get('MAIL_PASSWORD'))
 
 mail = Mail(app)
 
@@ -59,4 +57,10 @@ def create_database():
 
 
 # Import routes after app and db initialization to avoid circular imports
-from TaskManager import routes
+from TaskManager.users.routes import users
+from TaskManager.tasks.routes import tasks
+from TaskManager.main.routes import main
+
+app.register_blueprint(users)
+app.register_blueprint(tasks)
+app.register_blueprint(main)

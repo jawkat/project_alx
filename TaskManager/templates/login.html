@@ -40,7 +40,7 @@
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
                 <small class="text-muted ml-2">
-                    <a href="{{ url_for('reset_request') }}">Forgot Password?</a>
+                    <a href="{{ url_for('users.reset_request') }}">Forgot Password?</a>
                 </small>
             </div>
 
@@ -49,7 +49,7 @@
 
     <div>
         <small>
-            &nbsp;&nbsp Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
+            &nbsp;&nbsp Need An Account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign Up Now</a>
         </small>
     </div>
 

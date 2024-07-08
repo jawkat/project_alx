@@ -14,8 +14,8 @@ Landing Page
             <hr class="my-4">
             <p>Get started today and stay organized with our intuitive tools.</p>
             <p class="lead">Manage your tasks efficiently and effectively with notes and collaborators.</p>
-            <a class="btn btn-primary btn-lg" href="{{ url_for('home') }}" role="button">Explore Tasks</a>
-            <a href="{{ url_for('register') }}" class="btn btn-lg btn-light">Get Started</a>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('main.home') }}" role="button">Explore Tasks</a>
+            <a href="{{ url_for('users.register') }}" class="btn btn-lg btn-light">Get Started</a>
         </div>
     </div>
 </header>
@@ -90,7 +90,7 @@ Landing Page
   <div class="container  text-center ">
     <h2>Ready to Get Started?</h2>
     <p class="lead">Sign up now and start managing your tasks more effectively.</p>
-    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Sign Up Now</a>
+    <a href="{{ url_for('users.register') }}" class="btn btn-primary btn-lg">Sign Up Now</a>
 
     <p class="mt-3">Contact us:</p>
         <a href="#jawad">Jawad - Morocco</a>
